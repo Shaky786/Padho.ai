@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign Up - Padho.ai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+  <form class="bg-white p-6 rounded shadow-md w-80" id="signupForm">
+    <h2 class="text-xl font-bold mb-4 text-center">Sign Up</h2>
+    <input type="email" name="email" placeholder="Email" required class="w-full mb-3 p-2 border rounded" />
+    <input type="password" name="password" placeholder="Password" required class="w-full mb-3 p-2 border rounded" />
+    <button type="submit" class="w-full bg-green-600 text-white p-2 rounded">Sign Up</button>
+    <p id="msg" class="text-red-500 text-sm mt-2"></p>
+  </form>
+  <script>
+    document.getElementById('signupForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const res = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          email: e.target.email.value,
+          password: e.target.password.value
+        })
+      });
+      const data = await res.json();
+      if (data.success) alert("Signup success! User ID: " + data.userId);
+      else document.getElementById('msg').textContent = data.error;
+    };
+  </script>
+</body>
+</html>
